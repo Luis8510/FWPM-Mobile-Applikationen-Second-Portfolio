@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(CarouselApp());
+  runApp(const CarouselApp());
 }
 
 class CarouselApp extends StatefulWidget {
@@ -20,73 +20,72 @@ class _CarouselAppState extends State<CarouselApp> {
     'assets/images/avatar5.png'
   ];
 
-  int currentIndex = 0;
+  int _currentIndex = 0;
+
+  updateIndex(int updateValue) {
+    setState(() {
+      _currentIndex = (_currentIndex + updateValue) % imagePaths.length;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Image Carousel'),
-        ),
+        backgroundColor: Colors.black,
         body: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Expanded(
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.9,
+                height: MediaQuery.of(context).size.height * 0.55,
                 child: Image.asset(
-                  imagePaths[currentIndex],
+                  imagePaths[_currentIndex],
                   fit: BoxFit.cover,
                 ),
               ),
-              const SizedBox(height: 20),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.blue,
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              currentIndex =
-                                  (currentIndex - 1) % imagePaths.length;
-                            });
-                          },
-                          child: const Icon(
-                            color: Colors.white,
-                            Icons.chevron_left,
-                            size: 100,
-                          ),
-                        ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      updateIndex(-1);
+                    },
+                    child: Container(
+                      width: 140,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: const Color.fromARGB(255, 154, 211, 255),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.blue,
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              currentIndex =
-                                  (currentIndex + 1) % imagePaths.length;
-                            });
-                          },
-                          child: const Icon(
-                            color: Colors.white,
-                            Icons.chevron_right,
-                            size: 100,
-                          ),
-                        ),
+                      child: const Icon(
+                        color: Colors.black,
+                        Icons.chevron_left,
+                        size: 100,
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                  GestureDetector(
+                    onTap: () {
+                      updateIndex(1);
+                    },
+                    child: Container(
+                      width: 140,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: const Color.fromARGB(255, 154, 211, 255),
+                      ),
+                      child: const Icon(
+                        color: Colors.black,
+                        Icons.chevron_right,
+                        size: 100,
+                      ),
+                    ),
+                  ),
+                ],
               )
             ],
           ),
